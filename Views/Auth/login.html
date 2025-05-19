@@ -1,0 +1,8 @@
+{% include "Template/adminHeader.html" %}
+<form class="form-data" data-destination="auth" calling-method="setLogin" data-type="json">
+    <input name="userEmail" id="userEmail" type="text" class="form-control form-control-db" placeholder="Usuario o correo">
+    <input name="userPassword" id="userPassword" type="password" class="form-control form-control-db" placeholder="Contraseña">
+    <button id="send-login" type="submit" class="btn btn-primary btn-block">Iniciar sesión</button>
+</form>
+
+{% include "Template/adminFooter.html" %}
