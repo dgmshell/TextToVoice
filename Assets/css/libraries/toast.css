@@ -1,0 +1,119 @@
+
+/* Estilos para el contenedor del toast */
+#cooltoast-container {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: auto;
+    z-index: 200000000001212;
+
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50%;
+}
+
+/* Estilos para cada toast individual */
+.cooltoast-toast {
+    font-family: "Roboto", sans-serif;
+    position: relative;
+    padding: 8px 12px;
+    margin: 10px 16px;
+    border-radius: 8px;
+    background: white;
+    cursor: pointer;
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.19);
+    transition: .4s all ease-in;
+    animation-duration: .5s;
+    animation-name: cooltoast;
+    animation-timing-function: ease-out;
+}
+
+.cooltoast-fadeOut {
+    animation-name: cooltoastFadeOut;
+    animation-duration: .5s; /* Ajusta la duración según tus preferencias */
+    animation-timing-function: ease-out;
+    animation-fill-mode: forwards;
+}
+
+/* Estilos para los textos dentro del toast */
+.cooltoast-toast p,
+.cooltoast-toast h4 {
+    margin: 3px 0!important;
+}
+
+/* Estilos específicos para el título del toast */
+.cooltoast-title {
+    font-weight: 700;
+    font-size: 15px;
+    margin-bottom: 10px;
+}
+
+/* Estilos específicos para el texto del toast */
+.cooltoast-text {
+    font-size: 14px;
+    color: #2f384b;
+}
+
+/* Estilos para el ícono dentro del toast */
+.cooltoast-icon {
+    position: absolute;
+    top: 5px;
+    left: -40px;
+    width: 50px;
+    height: 50px;
+    border-radius: 100%;
+    background: #FFF;
+}
+
+/* Estilos para los enlaces dentro del toast */
+.cooltoast-toast a,
+.cooltoast-toast a:hover {
+    color: #549EDB !important;
+    text-decoration: none !important;
+}
+
+/* Estilos para cada tipo de toast */
+.cooltoast-success {
+    border-bottom: 4px solid #51C625;
+}
+
+.cooltoast-warning {
+    border-bottom: 4px solid #DB9215;
+}
+
+.cooltoast-error {
+    border-bottom: 4px solid #DB2B1D;
+}
+
+.cooltoast-info {
+    border-bottom: 4px solid #27ABDB;
+}
+
+/* Animaciones */
+@keyframes cooltoast {
+    from {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+@keyframes cooltoastFadeOut {
+    from {
+        transform: translateY(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+}
+@media screen and (max-width: 768px) {
+    #cooltoast-container {
+
+        width: 94%;
+    }
+
+}

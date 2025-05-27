@@ -14,9 +14,11 @@ export async function setLogin(response) {
         case 'login':
 
             showToast('Exito', data.message, { timeout: 10000, type: 'success' });
-            setTimeout(function() {
-                window.location.href = router +'dashboard';
-            }, 5000);
+            if(data.status==="yes"){
+                setTimeout(function() {
+                    window.location.href = router +'dashboard';
+                }, 5000);
+            }
             break;
 
         case 'error':
