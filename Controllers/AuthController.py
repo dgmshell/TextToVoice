@@ -6,6 +6,7 @@ class AuthController:
         self.auth_blueprint = Blueprint('auth', __name__)
         self.auth_blueprint.add_url_rule('/login', view_func=self.login)
         self.auth_blueprint.add_url_rule('/signup', view_func=self.signup)
+        self.auth_blueprint.add_url_rule('/logout', view_func=self.logout)
         self.auth_blueprint.add_url_rule('/setLogin', methods=['POST'], view_func=self.setLogin)
     def login(self):
         # Lógica para el login
@@ -55,3 +56,11 @@ class AuthController:
             except Exception as e:
                 print(f"Error en setLogin: {e}")
                 return jsonify({"status": "error", "message": "Error interno del servidor"}), 500
+
+    def logout(self):
+         try:
+             session.clear()
+             return redirect(url_for('auth.login'))
+
+         except Exception as e:
+              print(f"Error al cerrar la conexion: {e}")

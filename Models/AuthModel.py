@@ -1,6 +1,7 @@
 import mysql.connector
 import bcrypt
 from Libraries.Connection import Connection
+
 class AuthModel:
     def __init__(self):
         try:
@@ -20,7 +21,6 @@ class AuthModel:
             }
 
         try:
-
             self.cursor.execute("""
                 SELECT
                     u.userId, u.userName, u.userPassword,
@@ -42,7 +42,6 @@ class AuthModel:
                         "user": user
                     }
 
-
             return {
                 "status": "error",
                 "message": "Credenciales incorrectas"
@@ -58,3 +57,24 @@ class AuthModel:
                 "status": "error",
                 "message": "Error interno en el servidor"
             }
+
+    def get_user_data(self, user_id):
+        if not self.cursor:
+            return None
+        try:
+            self.cursor.execute("""
+                SELECT
+                    u.userId,
+                    u.userName,
+                    u.roleId,
+                    r.roleName,
+                    r.roleStatus
+                FROM users u
+                INNER JOIN roles r ON u.roleId = r.roleId
+                WHERE u.userId = %s
+            """, (user_id,))
+            user_data = self.cursor.fetchone()
+            return user_data
+        except Exception as e:
+            print(f"Error al obtener los datos del usuario: {e}")
+            return None

@@ -1,11 +1,11 @@
 from flask import Blueprint, render_template, session, request,jsonify, redirect, url_for
 from Models.AuthModel import AuthModel
-class DashboardController:
+class AudiosController:
     def __init__(self):
-        self.dashboard_blueprint = Blueprint('dashboard', __name__)
-        self.dashboard_blueprint.add_url_rule('/dashboard', view_func=self.dashboard)
+        self.audios_blueprint = Blueprint('audios', __name__)
+        self.audios_blueprint.add_url_rule('/audios', view_func=self.audios)
 
-    def dashboard(self):
+    def audios(self):
         if 'userId' not in session:
                 return redirect(url_for('auth.login'))
 
@@ -28,10 +28,10 @@ class DashboardController:
         print(f"✅ Acceso permitido para: {user_data['userName']} con rol {user_data['roleName']}")
 
         data = {
-            "pageName": "dashboard",
-            "pageTitle": "Welcome To Dashboard",
-            "keywords": "dashboard, panel",
-            "description": "Dashboard Admin"
+            "pageName": "audios",
+            "pageTitle": "Welcome To Users",
+            "keywords": "audios, panel",
+            "description": "Users Admin"
         }
 
-        return render_template("Dashboard/dashboard.html", data=data, user_data=user_data)
+        return render_template("Audios/audios.html", data=data, user_data=user_data)
