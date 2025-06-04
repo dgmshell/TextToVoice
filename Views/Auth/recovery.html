@@ -1,0 +1,34 @@
+<!--=== Header Page ===-->
+{% include "Template/adminHeader.html" %}
+<!--<pre>{{ data | tojson(indent=2) }}</pre>-->
+
+<!--=== Recovery Page ===-->
+<body class="login-page" style="min-height: 466px;">
+<div class="login-box">
+    <div class="card card-outline card-primary">
+        <div class="card-header text-center">
+            <a href="{{ url_base() }}auth/recovery" class="h1"><b>TT</b>Voice</a>
+        </div>
+        <div class="card-body">
+            <p class="login-box-msg">Ingrese su correo electrónico y le enviaremos una contraseña temporal para que pueda acceder nuevamente a su cuenta.</p>
+            <form class="form-data" data-destination="auth" calling-method="setLogin" data-type="json">
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" placeholder="Correo electrónico" name="userEmail" id="userEmail">
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <i class="fa fa-envelope" aria-hidden="true"></i>
+                        </div>
+                    </div>
+                </div>
+                <button id="send-login" type="submit" class="btn btn-primary btn-block">Enviar correo</button>
+            </form>
+            <p class="mb-0 mt-1">
+                <a href="{{ url_base() }}auth/login" class="text-center">Iniciar sesion</a>
+            </p>
+        </div>
+    </div>
+</div>
+</body>
+
+<!--=== Footer Page ===-->
+{% include "Template/adminFooter.html" %}

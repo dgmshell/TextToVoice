@@ -1,8 +1,52 @@
+<!--=== Header Page ===-->
 {% include "Template/adminHeader.html" %}
-<pre>{{ data | tojson(indent=2) }}</pre>
-<form class="form-data" data-destination="auth" calling-method="setLogin" data-type="json">
-    <input name="userEmail" id="userEmail" type="text" class="form-control form-control-db" placeholder="Usuario o correo">
-    <input name="userPassword" id="userPassword" type="password" class="form-control form-control-db" placeholder="Contraseña">
-    <button id="send-login" type="submit" class="btn btn-primary btn-block">Iniciar sesión</button>
-</form>
+<!--<pre>{{ data | tojson(indent=2) }}</pre>-->
+
+<!--=== Login Page ===-->
+<body class="login-page" style="min-height: 466px;">
+<div class="login-box">
+    <!-- /.login-logo -->
+    <div class="card card-outline card-primary">
+        <div class="card-header text-center">
+            <a href="{{ url_base() }}auth/login" class="h1"><b>TT</b>Voice</a>
+        </div>
+        <div class="card-body">
+            <p class="login-box-msg">Iniciar sesión en TT Voice</p>
+
+            <form class="form-data" data-destination="auth" calling-method="setLogin" data-type="json">
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" placeholder="Nombre de usuario" name="userEmail" id="userEmail">
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <i class="fa fa-user" aria-hidden="true"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="input-group mb-3">
+                    <input type="password" class="form-control" placeholder="Contraseña" name="userPassword" id="userPassword">
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-lock"></span>
+                        </div>
+                    </div>
+                </div>
+                  <button id="send-login" type="submit" class="btn btn-primary btn-block">Iniciar sesion</button>
+            </form>
+            <div class="social-auth-links text-center mt-2 mb-3">
+                <button href="#" class="btn btn-block btn-danger">
+                    <i class="fab fa-google-plus mr-2"></i> Iniciar sesion con Google+
+                </button>
+            </div>
+            <p class="mb-1">
+                <a href="{{ url_base() }}auth/recovery">Recuperar mi contraseña</a>
+            </p>
+            <p class="mb-0">
+                <a href="{{ url_base() }}auth/signup" class="text-center">No tienes una cuenta?</a>
+            </p>
+        </div>
+    </div>
+</div>
+</body>
+
+<!--=== Footer Page ===-->
 {% include "Template/adminFooter.html" %}

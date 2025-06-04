@@ -6,6 +6,7 @@ class AuthController:
         self.auth_blueprint = Blueprint('auth', __name__)
         self.auth_blueprint.add_url_rule('/login', view_func=self.login)
         self.auth_blueprint.add_url_rule('/signup', view_func=self.signup)
+        self.auth_blueprint.add_url_rule('/recovery', view_func=self.recovery)
         self.auth_blueprint.add_url_rule('/logout', view_func=self.logout)
         self.auth_blueprint.add_url_rule('/setLogin', methods=['POST'], view_func=self.setLogin)
     def login(self):
@@ -64,3 +65,14 @@ class AuthController:
 
          except Exception as e:
               print(f"Error al cerrar la conexion: {e}")
+    def recovery(self):
+            # Lógica para el signup
+            if 'roleId' in session and session.get('roleName') == 'admin':
+                        return redirect(url_for('dashboard.dashboard'))
+            data = {
+                        "pageName": "recovery",
+                        "pageTitle": "Welcome To Recovery",
+                        "keywords": "recovery, recovery",
+                        "description": "Recovery "
+                    }
+            return render_template('/Auth/recovery.html', data=data)
