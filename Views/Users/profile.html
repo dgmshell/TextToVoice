@@ -84,29 +84,36 @@
                                     </div>
                                 </div>
                                 <div class="tab-pane" id="settings">
-                                    <form class="form-horizontal">
+
+                                    <form class="form-horizontal form-data" data-destination="profile" calling-method="setProfile" data-type="json" >
                                         <div class="form-group row">
-                                            <label for="profileFullName" class="col-sm-2 col-form-label">Nombre completo</label>
+                                            <label for="profileNames" class="col-sm-2 col-form-label">Nombre</label>
                                             <div class="col-sm-10">
-                                                <input type="text" class="form-control" id="profileFullName" name="profileFullName" placeholder="Nombre completo">
+                                                <input type="text" class="form-control" id="profileNames" name="profileNames" placeholder="Nombre" value="{{ user_data['profileNames']}}">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="profileSurnames" class="col-sm-2 col-form-label">Apellido</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" class="form-control" id="profileSurnames" name="profileSurnames" placeholder="Apellido" value="{{ user_data['profileSurnames']}}">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="profileEmail" class="col-sm-2 col-form-label">Correo</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" class="form-control" id="profileEmail" name="profileEmail" placeholder="Correo" value="{{ user_data['profileEmail']}}">
                                             </div>
                                         </div>
                                         <div class="form-group row">
                                             <label for="userName" class="col-sm-2 col-form-label">Nombre de usuario</label>
                                             <div class="col-sm-10">
-                                                <input type="text" class="form-control" id="userName" name="userName" placeholder="Nombre de usuario">
+                                                <input type="text" class="form-control" id="userName" name="userName" placeholder="Nombre de usuario" value="{{ user_data['userName']}}">
                                             </div>
                                         </div>
                                         <div class="form-group row">
-                                            <label for="userEmail" class="col-sm-2 col-form-label">Correo electronico</label>
+                                            <label for="userPassword" class="col-sm-2 col-form-label">Contraseña</label>
                                             <div class="col-sm-10">
-                                                <input type="text" class="form-control" id="userEmail" name="userEmail" placeholder="Correo electronico">
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label for="userPasword" class="col-sm-2 col-form-label">Contraseña</label>
-                                            <div class="col-sm-10">
-                                                <input type="text" class="form-control" id="userPasword" name="userPasword" placeholder="Contraseña">
+                                                <input type="text" class="form-control" id="userPassword" name="userPassword" placeholder="Contraseña">
                                             </div>
                                         </div>
                                         <div class="form-group row">

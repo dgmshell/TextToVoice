@@ -9,6 +9,7 @@ class AuthController:
         self.auth_blueprint.add_url_rule('/recovery', view_func=self.recovery)
         self.auth_blueprint.add_url_rule('/logout', view_func=self.logout)
         self.auth_blueprint.add_url_rule('/setLogin', methods=['POST'], view_func=self.setLogin)
+        self.auth_blueprint.add_url_rule('/setSignup', methods=['POST'], view_func=self.setSignup)
     def login(self):
         # Lógica para el login
         if 'roleId' in session and session.get('roleName') == 'admin':
@@ -76,3 +77,35 @@ class AuthController:
                         "description": "Recovery "
                     }
             return render_template('/Auth/recovery.html', data=data)
+
+    def setSignup(self):
+        try:
+            data = request.get_json()
+            profileNames = data.get('profileNames')
+            profileSurnames = data.get('profileSurnames')
+            profileEmail = data.get('profileEmail')
+            userName = data.get('userName')
+            userPassword = data.get('userPassword')
+
+            auth = AuthModel()
+            response = auth.signup(profileNames, profileSurnames,profileEmail,userName,userPassword)
+
+            return jsonify(response)
+
+        except Exception as e:
+            print(f"Error en setSignup: {e}")
+            return jsonify({"message": "Error interno del servidor."}), 500
+
+# {profileFullName: "", userName: "dgm", userEmail: "", userPassword: "123"}
+# profileFullName
+# :
+# ""
+# userEmail
+# :
+# ""
+# userName
+# :
+# "dgm"
+# userPassword
+# :
+# "123"

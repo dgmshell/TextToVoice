@@ -17,6 +17,8 @@ class Routers {
 
             case "users":
                 return `${router}users`;
+            case "profile":
+                return `${router}users/setProfile`;
             default:
                 throw new Error("Debe especificar una ruta válida.");
         }

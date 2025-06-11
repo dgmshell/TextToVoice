@@ -11,9 +11,25 @@
         </div>
         <div class="card-body">
             <p class="login-box-msg">Crear cuenta en TT Voice</p>
-            <form class="form-data" data-destination="users" calling-method="setUser" data-type="json">
+            <form class="form-data" data-destination="auth" calling-method="setSignup" data-type="json">
                 <div class="input-group mb-3">
-                    <input type="text" class="form-control" placeholder="Nombre completo" name="profileFullName" id="profileFullName">
+                    <input type="text" class="form-control" placeholder="Nombres" name="profileNames" id="profileNames">
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <i class="fas fa-address-card" aria-hidden="true"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" placeholder="Apellidos" name="profileSurnames" id="profileSurnames">
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <i class="fas fa-address-card" aria-hidden="true"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" placeholder="Correo" name="profileEmail" id="profileEmail">
                     <div class="input-group-append">
                         <div class="input-group-text">
                             <i class="fas fa-address-card" aria-hidden="true"></i>
@@ -25,14 +41,6 @@
                     <div class="input-group-append">
                         <div class="input-group-text">
                             <span class="fas fa-user"></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="input-group mb-3">
-                    <input type="text" class="form-control" placeholder="Correo electrónico" name="userEmail" id="userEmail">
-                    <div class="input-group-append">
-                        <div class="input-group-text">
-                            <span class="fas fa-envelope"></span>
                         </div>
                     </div>
                 </div>

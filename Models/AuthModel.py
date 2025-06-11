@@ -68,13 +68,80 @@ class AuthModel:
                     u.userName,
                     u.roleId,
                     r.roleName,
-                    r.roleStatus
+                    p.profileNames,
+                    p.profileSurnames,
+                    p.profileEmail
                 FROM users u
                 INNER JOIN roles r ON u.roleId = r.roleId
+                INNER JOIN profiles p ON u.userId = p.userId
                 WHERE u.userId = %s
             """, (user_id,))
+
             user_data = self.cursor.fetchone()
             return user_data
+
         except Exception as e:
             print(f"Error al obtener los datos del usuario: {e}")
             return None
+
+    def signup(self, profileNames, profileSurnames, profileEmail, userName, userPassword):
+        roleId = 1  # Rol por defecto
+
+        if not self.cursor or not self.connection:
+            return {
+                "status": "error",
+                "message": "No se pudo establecer conexión con la base de datos"
+            }
+
+        try:
+            # Verificar si el nombre de usuario ya existe
+            self.cursor.execute("SELECT * FROM users WHERE userName = %s", (userName,))
+            if self.cursor.fetchone():
+                return {
+                    "status": "error",
+                    "message": "El nombre de usuario ya está registrado"
+                }
+
+            # Verificar si el correo ya existe
+            self.cursor.execute("SELECT * FROM profiles WHERE profileEmail = %s", (profileEmail,))
+            if self.cursor.fetchone():
+                return {
+                    "status": "error",
+                    "message": "El correo ya está registrado"
+                }
+
+            # Encriptar la contraseña
+            hashed_password = bcrypt.hashpw(userPassword.encode('utf-8'), bcrypt.gensalt())
+
+            # Insertar en users
+            self.cursor.execute("""
+                INSERT INTO users (userName, userPassword, roleId)
+                VALUES (%s, %s, %s)
+            """, (userName, hashed_password.decode('utf-8'), roleId))
+            self.connection.commit()
+
+            # Obtener el userId insertado
+            user_id = self.cursor.lastrowid
+
+            # Insertar en profiles
+            self.cursor.execute("""
+                INSERT INTO profiles (userId, profileNames, profileSurnames, profileEmail)
+                VALUES (%s, %s, %s, %s)
+            """, (user_id, profileNames, profileSurnames, profileEmail))
+            self.connection.commit()
+
+            return {
+                "status": "success",
+                "message": "Usuario registrado con éxito"
+            }
+
+        except mysql.connector.Error as e:
+            return {
+                "status": "error",
+                "message": f"Error en la consulta MySQL: {e}"
+            }
+        except Exception as e:
+            return {
+                "status": "error",
+                "message": f"Error inesperado: {e}"
+            }
