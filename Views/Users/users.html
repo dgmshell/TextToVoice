@@ -27,34 +27,88 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-body table-responsive p-0">
+                                <form class="form-horizontal form-data" data-destination="profile" calling-method="setProfile" data-type="json">
                                 <table class="table table-hover text-nowrap">
                                     <thead>
                                     <tr>
                                         <th>ID</th>
-                                        <th>User</th>
-                                        <th>Date</th>
-                                        <th>Status</th>
-                                        <th>Reason</th>
+                                        <th>Usuario</th>
+                                        <th>Nombre</th>
+                                        <th>Apellido</th>
+                                        <th>Correo</th>
+                                        <th>Tipo de rol</th>
+                                        <th>Editar</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     {% for user in users %}
                                     <tr>
-                                        <td>{{ user.userId }}</td><td>{{ user.userName }}</td><td>{{ user.roleName }}</td>
+                                        <td>{{ user.userId }}</td>
+                                        <td>{{ user.userName }}</td>
+                                        <td>{{ user.profileNames }}</td>
+                                        <td>{{ user.profileSurnames }}</td>
+                                        <td>{{ user.profileEmail }}</td>
+                                        <td>{{ user.roleName }}</td>
+                                        <td>
+                                            <button class="updateRole btn btn-primary" user-id="{{ user.userId }}" role-user="{{ user.roleId }}" type="button" data-toggle="modal" data-target="#staticBackdrop">
+                                                Cambiar role
+                                            </button>
+
+                                        </td>
 
                                     </tr>
                                     {% endfor %}
                                     </tbody>
                                 </table>
+                             </form>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
             <div class="card-footer">
                 Footer
             </div>
         </div>
     </section>
 </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="staticBackdrop" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="selectRole">Seleccionar Rol</label>
+                        <select class="form-control" id="selectRole">
+                            <option value="">Rol</option>
+                            <option value="1">administrador</option>
+                            <option value="2">usuario</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Understood</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.querySelectorAll(".updateRole").forEach(button => {
+            button.addEventListener("click", (evt) => {
+                const roleId = evt.target.getAttribute("role-user");
+                document.getElementById("selectRole").value = roleId;
+                console.log("Rol asignado al select:", roleId);
+            });
+        });
+
+    </script>
 {% include "Template/adminFooter.html" %}
