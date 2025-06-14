@@ -37,7 +37,12 @@
                                         <th>Apellido</th>
                                         <th>Correo</th>
                                         <th>Tipo de rol</th>
+<<<<<<< HEAD
                                         <th>Editar</th>
+=======
+                                        <th>Editar Role</th>
+                                        <th>Eliminar</th>
+>>>>>>> e584ece351510e858fcdb3ce4bcf742b241f31ae
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -50,11 +55,23 @@
                                         <td>{{ user.profileEmail }}</td>
                                         <td>{{ user.roleName }}</td>
                                         <td>
+<<<<<<< HEAD
                                             <button class="updateRole btn btn-primary" user-id="{{ user.userId }}" role-user="{{ user.roleId }}" type="button" data-toggle="modal" data-target="#staticBackdrop">
+=======
+                                            <button class="updateRole btn btn-primary" user-id="{{ user.userId }}" role-id="{{ user.roleId }}" type="button" data-toggle="modal" data-target="#staticBackdrop">
+>>>>>>> e584ece351510e858fcdb3ce4bcf742b241f31ae
                                                 Cambiar role
                                             </button>
 
                                         </td>
+<<<<<<< HEAD
+=======
+                                        <td>
+                                            <button class="deleteUser btn btn-danger" user-id="{{ user.userId }}" name-user="{{ user.profileNames }} {{ user.profileSurnames }}" type="button" data-toggle="modal" data-target="#staticBackdrop2">
+                                                Eliminar
+                                            </button>
+                                        </td>
+>>>>>>> e584ece351510e858fcdb3ce4bcf742b241f31ae
 
                                     </tr>
                                     {% endfor %}
@@ -76,6 +93,7 @@
 
     <!-- Modal -->
     <div class="modal fade" id="staticBackdrop" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<<<<<<< HEAD
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -100,13 +118,85 @@
                 </div>
             </div>
         </div>
+=======
+        <form class="form-data" data-destination="roles" calling-method="setRoleId" data-type="json">
+            <input type="text" name="userId" id="userId" hidden="">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="roleId">Seleccionar Rol</label>
+                            <select class="form-control" id="roleId" name="roleId">
+                                <option value="">Rol</option>
+                                <option value="3">developer</option>
+                                <option value="1">administrador</option>
+                                <option value="2">usuario</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Actualizar</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="staticBackdrop2" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <form class="form-data" data-destination="users" calling-method="deleteUserId" data-type="json">
+            <input type="text" name="userId2" id="userId2" hidden>
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="staticBackdropLabel2">Eliminar usuario</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <h3>Esta seguro de eliminar a <span id="nameUser"></span></h3>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-danger">Eliminar</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+>>>>>>> e584ece351510e858fcdb3ce4bcf742b241f31ae
     </div>
     <script>
         document.querySelectorAll(".updateRole").forEach(button => {
             button.addEventListener("click", (evt) => {
+<<<<<<< HEAD
                 const roleId = evt.target.getAttribute("role-user");
                 document.getElementById("selectRole").value = roleId;
                 console.log("Rol asignado al select:", roleId);
+=======
+                const userId = evt.target.getAttribute("user-id");
+                document.getElementById("userId").value = userId;
+
+
+                const roleId = evt.target.getAttribute("role-id");
+                document.getElementById("roleId").value = roleId;
+
+            });
+        });
+        document.querySelectorAll(".deleteUser").forEach(button => {
+            button.addEventListener("click", (evt) => {
+                const userId = evt.target.getAttribute("user-id");
+                const nameUser = evt.target.getAttribute("name-user");
+                document.getElementById("nameUser").innerHTML = nameUser;
+                document.getElementById("userId2").value = userId;
+
+>>>>>>> e584ece351510e858fcdb3ce4bcf742b241f31ae
             });
         });
 

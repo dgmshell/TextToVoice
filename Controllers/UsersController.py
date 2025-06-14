@@ -8,6 +8,10 @@ class UsersController:
         self.users_blueprint.add_url_rule('/', view_func=self.users)
         self.users_blueprint.add_url_rule('/profile', view_func=self.profile)
         self.users_blueprint.add_url_rule('/setProfile', methods=['POST'], view_func=self.setProfile)
+<<<<<<< HEAD
+=======
+        self.users_blueprint.add_url_rule('/deleteUserId', methods=['POST'], view_func=self.deleteUserId)
+>>>>>>> e584ece351510e858fcdb3ce4bcf742b241f31ae
     def users(self):
         if 'userId' not in session:
                 return redirect(url_for('auth.login'))
@@ -88,4 +92,21 @@ class UsersController:
 
             except Exception as e:
                 print(f"Error en setProfile: {e}")
+<<<<<<< HEAD
+=======
+                return jsonify({"message": "Error interno del servidor."}), 500
+    def deleteUserId(self):
+            try:
+                data = request.get_json()
+
+                userId = data.get('userId2')
+
+                users = UsersModel()
+                response = users.delete(userId)
+
+                return jsonify(response)
+
+            except Exception as e:
+                print(f"Error en setProfile: {e}")
+>>>>>>> e584ece351510e858fcdb3ce4bcf742b241f31ae
                 return jsonify({"message": "Error interno del servidor."}), 500

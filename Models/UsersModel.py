@@ -121,3 +121,44 @@ class UsersModel:
             }
 
 
+<<<<<<< HEAD
+=======
+    def delete(self, userId):
+        if not self.cursor or not self.connection:
+            return {
+                "status": "error",
+                "message": "No se pudo establecer conexión con la base de datos"
+            }
+
+        try:
+            print(f"[DEBUG] Eliminando perfil de userId: {userId}")
+            self.cursor.execute("""
+                DELETE FROM profiles
+                WHERE userId = %s
+            """, (userId,))
+
+            print(f"[DEBUG] Eliminando usuario userId: {userId}")
+            self.cursor.execute("""
+                DELETE FROM users
+                WHERE userId = %s
+            """, (userId,))
+
+            self.connection.commit()
+
+            return {
+                "status": "success",
+                "message": "Usuario y perfil eliminados correctamente"
+            }
+
+
+        except mysql.connector.Error as e:
+            return {
+                "status": "error",
+                "message": f"Error en la consulta MySQL: {e}"
+            }
+        except Exception as e:
+            return {
+                "status": "error",
+                "message": f"Error inesperado: {e}"
+            }
+>>>>>>> e584ece351510e858fcdb3ce4bcf742b241f31ae
