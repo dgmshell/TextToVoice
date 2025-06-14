@@ -17,20 +17,15 @@ from Controllers.RolesController import RolesController
 from Controllers.AudiosController import AudiosController
 from Controllers.HomeController import HomeController
 from Controllers.ConverterController import ConverterController
+
 #=========== Registro de Blueprints
 app.register_blueprint(HomeController().home_blueprint)
 app.register_blueprint(DashboardController().dashboard_blueprint)
 app.register_blueprint(AudiosController().audios_blueprint)
 app.register_blueprint(AuthController().auth_blueprint, url_prefix="/auth")
 app.register_blueprint(UsersController().users_blueprint, url_prefix="/users")
-<<<<<<< HEAD
-app.register_blueprint(RolesController().roles_blueprint)
-app.register_blueprint(ConverterController().converter_blueprint)
-=======
-
 app.register_blueprint(RolesController().roles_blueprint, url_prefix="/roles")
 app.register_blueprint(ConverterController().converter_blueprint, url_prefix="/converter")
->>>>>>> e584ece351510e858fcdb3ce4bcf742b241f31ae
 
 #=========== Configuración de la clave secreta
 app.secret_key = os.urandom(24)

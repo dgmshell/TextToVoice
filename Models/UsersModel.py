@@ -105,7 +105,7 @@ class UsersModel:
                 INNER JOIN roles r ON u.roleId = r.roleId
             """)
 
-            users = self.cursor.fetchall()  # si el cursor es dictionary=True
+            users = self.cursor.fetchall()  # Asumiendo cursor configurado con dictionary=True
 
             return users
 
@@ -120,9 +120,6 @@ class UsersModel:
                 "message": f"Error inesperado: {e}"
             }
 
-
-<<<<<<< HEAD
-=======
     def delete(self, userId):
         if not self.cursor or not self.connection:
             return {
@@ -150,7 +147,6 @@ class UsersModel:
                 "message": "Usuario y perfil eliminados correctamente"
             }
 
-
         except mysql.connector.Error as e:
             return {
                 "status": "error",
@@ -161,4 +157,3 @@ class UsersModel:
                 "status": "error",
                 "message": f"Error inesperado: {e}"
             }
->>>>>>> e584ece351510e858fcdb3ce4bcf742b241f31ae
