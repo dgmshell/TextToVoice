@@ -1,0 +1,5 @@
+.user-block .comment, .user-block .description, .user-block .username
+{
+    display: block;
+    margin-left: 0px;
+}

@@ -1,0 +1,198 @@
+{% include "Template/adminHeader.html" %}
+{% include "Template/adminSidebar.html" %}
+<body class="hold-transition sidebar-mini">
+<div class="wrapper">
+<div class="content-wrapper" style="min-height: 620px;">
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6"><h1>Compose</h1></div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active">Convertidor</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-3">
+<!--                    <a href="mailbox.html" class="btn btn-primary btn-block mb-3">Convertir texto</a>-->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Carpetas</h3>
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
+                            </div>
+                        </div>
+                        <div class="card-body p-0">
+                            <ul class="nav nav-pills flex-column">
+                                <li class="nav-item active">
+                                    <a href="#" class="nav-link">
+                                        <i class="fas fa-inbox"></i> Completos<span class="badge bg-primary float-right">12</span></a></li>
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link"><i class="far fa-envelope"></i> Borradores</a>
+                                </li>
+                                <li class="nav-item"><a href="#" class="nav-link"><i class="far fa-file-alt"></i> Favoritos</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                    <div class="col-md-9">
+                        <form class="form-data" data-destination="converter" calling-method="setConverter" data-type="json">
+                        <div class="card card-primary card-outline">
+                            <div class="card-header">
+                                <h3 class="card-title">Ingres el texto a convertir</h3>
+                            </div>
+                            <div class="card-body">
+                                <input type="hidden" name="audioId" id="audioId">
+                                <div class="form-group"><input id="audioTitle" name="audioTitle" class="form-control" placeholder="Titulo"></div>
+                                <div class="form-group">
+                                    <label for="lang">Seleccionar Idioma</label>
+                                    <select class="form-control" id="lang" name="lang">
+                                        <option value="">Idioma</option>
+                                        <option value="es">Español</option>
+                                        <option value="en">English</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <textarea name="audioText" id="compose-textarea" class="form-control" style="height: 400px"></textarea>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <div class="float-right">
+                                    <button id="converterAudio" type="submit" class="btn btn-default"><i class="fas fa-pencil-alt"></i> Convertir</button>
+                                    <button id="saveAudio" disabled type="submit" class="btn btn-primary"><i class="far fa-circle-check"></i> Guardar</button>
+                                </div>
+                                <button type="reset" class="btn btn-default"><i class="fas fa-times"></i> Descartar</button>
+                            </div>
+                        </div>
+                        </form>
+                    </div>
+
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body table-responsive p-0">
+                            <form class="form-horizontal form-data" data-destination="profile" calling-method="setProfile" data-type="json">
+                                <table class="table table-hover text-nowrap">
+                                    <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Usuario</th>
+                                        <th>Titulo audio</th>
+                                        <th>Idioma</th>
+                                        <th>Link Audio</th>
+                                        <th>Descargar</th>
+                                        <th>Favoritos</th>
+                                        <th>Eliminar</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <pre>{{ audios }}</pre>
+                                    {% for audio in audios %}
+                                    <tr>
+
+                                        <td>{{ audio.audioId }}</td>
+                                        <td>{{ audio.userName }}</td>
+                                        <td>{{ audio.audioTitle }}</td>
+                                        <td>{{ audio.audioLanguage }}</td>
+                                        <td><a href="{{ url_files()  }}audios/{{ audio.audioIdFile }}">Play</a></td>
+                                        <td>
+                                            <button class="favoriteAudio btn btn-primary" user-id="{{ audio.userId }}" audio-id="{{ audio.audioId }}" audio-title="{{ audio.audioTitle }}" type="button" data-toggle="modal" data-target="#staticBackdrop">
+                                                Add Favorite
+                                            </button>
+
+                                        </td>
+                                        <td>
+                                            <button class="deleteAudio btn btn-danger" audio-id="{{ audio.audioId }}" audio-title="{{ audio.audioTitle }}" type="button" data-toggle="modal" data-target="#staticBackdrop2">
+                                                Eliminar
+                                            </button>
+                                        </td>
+
+                                    </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+    <!-- Modal -->
+    <div class="modal fade" id="staticBackdrop" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <form class="form-data" data-destination="converter" calling-method="addFavorite" data-type="json">
+            <input type="text" name="userId" id="userId" hidden="">
+            <input type="text" name="audioId3" id="audioId3" hidden="">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <h3>Dsea agregar <span id="audioTitle3"> a favoritos?</span></h3>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Agregar</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="staticBackdrop2" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <form class="form-data" data-destination="converter" calling-method="deleteAudioId" data-type="json">
+            <input type="text" name="audioId2" id="audioId2" hidden>
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="staticBackdropLabel2">Eliminar Audio</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <h3>Esta seguro de eliminar a <span id="audioTitle2"></span></h3>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-danger">Eliminar</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <script>
+        document.querySelectorAll(".deleteAudio").forEach(button => {
+            button.addEventListener("click", (evt) => {
+                const audioId = evt.target.getAttribute("audio-id");
+                document.getElementById("audioTitle2").innerHTML = evt.target.getAttribute("audio-title");
+                document.getElementById("audioId2").value = audioId;
+
+            });
+        });
+        document.querySelectorAll(".favoriteAudio").forEach(button => {
+            button.addEventListener("click", (evt) => {
+                const userId = evt.target.getAttribute("user-id");
+                const audioId = evt.target.getAttribute("audio-id");
+
+                document.getElementById("audioTitle3").innerHTML = evt.target.getAttribute("audio-title");
+                document.getElementById("userId").value = userId;
+                document.getElementById("audioId3").value = audioId;
+
+            });
+        });
+    </script>
+{% include "Template/adminFooter.html" %}
