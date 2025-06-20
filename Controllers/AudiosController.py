@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, session, request,jsonify, redirect, url_for
 from Models.AuthModel import AuthModel
+from Models.ConverterModel import ConverterModel
 class AudiosController:
     def __init__(self):
         self.audios_blueprint = Blueprint('audios', __name__)
@@ -25,13 +26,8 @@ class AudiosController:
         session['roleId'] = user_data['roleId']
         session['roleName'] = user_data['roleName']
 
-        print(f"✅ Acceso permitido para: {user_data['userName']} con rol {user_data['roleName']}")
+        converter = ConverterModel()
+        audios = converter.get_all_audios()
 
-        data = {
-            "pageName": "audios",
-            "pageTitle": "Welcome To Users",
-            "keywords": "audios, panel",
-            "description": "Users Admin"
-        }
 
-        return render_template("Audios/audios.html", data=data, user_data=user_data)
+        return render_template("Audios/audios.html",  user_data=user_data, audios=audios)

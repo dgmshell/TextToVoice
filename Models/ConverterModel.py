@@ -64,9 +64,22 @@ class ConverterModel:
 
         try:
             self.cursor.execute("""
-                SELECT a.audioId, a.audioIdFile, a.audioTitle, a.audioText, a.audioLanguage, a.userId, u.userName, a.createdAt
+                SELECT
+                    a.audioId,
+                    a.audioIdFile,
+                    a.audioTitle,
+                    a.audioText,
+                    a.audioLanguage,
+                    a.userId,
+                    u.userName,
+                    a.createdAt,
+                    CASE
+                        WHEN f.favoriteId IS NOT NULL THEN 1
+                        ELSE 0
+                    END AS isFavorite
                 FROM audios a
                 JOIN users u ON a.userId = u.userId
+                LEFT JOIN favorites f ON a.audioId = f.audioId
                 ORDER BY a.createdAt DESC
             """)
 
@@ -84,6 +97,7 @@ class ConverterModel:
                 "status": "error",
                 "message": f"Error inesperado: {e}"
             }
+
 
     def get_all_by_user(self, userId):
         if not self.cursor or not self.connection:
@@ -123,7 +137,14 @@ class ConverterModel:
             }
 
         try:
-            print(f"[DEBUG] Eliminando audio con audioId: {audioId}")
+
+            # Primero eliminar de favoritos (si existe)
+            self.cursor.execute("""
+                DELETE FROM favorites
+                WHERE audioId = %s
+            """, (audioId,))
+
+            # Luego eliminar el audio
             self.cursor.execute("""
                 DELETE FROM audios
                 WHERE audioId = %s
@@ -133,7 +154,7 @@ class ConverterModel:
 
             return {
                 "status": "success",
-                "message": "Audio eliminado correctamente"
+                "message": "Audio y sus favoritos eliminados correctamente"
             }
 
         except mysql.connector.Error as e:
@@ -146,6 +167,7 @@ class ConverterModel:
                 "status": "error",
                 "message": f"Error inesperado: {e}"
             }
+
     def add(self, userId, audioId):
         if not self.cursor or not self.connection:
             return {
@@ -154,21 +176,17 @@ class ConverterModel:
             }
 
         try:
-            print(f"[DEBUG] Verificando favorito: userId={userId}, audioId={audioId}")
 
-            # Verificar si ya existe el favorito para ese usuario y audio
             self.cursor.execute("""
                 SELECT statusFavorite FROM favorites WHERE userId = %s AND audioId = %s
             """, (userId, audioId))
 
             row = self.cursor.fetchone()
-            print(f"[DEBUG] Resultado SELECT: {row}")
 
             if row is not None:
                 current_status = row['statusFavorite'] if isinstance(row, dict) else row[0]
                 new_status = 0 if current_status == 1 else 1
 
-                print(f"[DEBUG] Actualizando statusFavorite a {new_status}")
                 self.cursor.execute("""
                     UPDATE favorites SET statusFavorite = %s WHERE userId = %s AND audioId = %s
                 """, (new_status, userId, audioId))
@@ -176,7 +194,7 @@ class ConverterModel:
                 self.connection.commit()
 
                 return {
-                    "status": "successUpdate",
+                    "status": "success",
                     "statusFavorite": new_status,
                     "message": "Estado favorito actualizado correctamente"
                 }

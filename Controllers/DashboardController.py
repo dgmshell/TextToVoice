@@ -25,13 +25,5 @@ class DashboardController:
         session['roleId'] = user_data['roleId']
         session['roleName'] = user_data['roleName']
 
-        print(f"✅ Acceso permitido para: {user_data['userName']} con rol {user_data['roleName']}")
 
-        data = {
-            "pageName": "dashboard",
-            "pageTitle": "Welcome To Dashboard",
-            "keywords": "dashboard, panel",
-            "description": "Dashboard Admin"
-        }
-
-        return render_template("Dashboard/dashboard.html", data=data, user_data=user_data)
+        return render_template("Dashboard/dashboard.html",  user_data=user_data)

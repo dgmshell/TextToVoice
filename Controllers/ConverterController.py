@@ -42,7 +42,7 @@ class ConverterController:
 
         converter = ConverterModel()
         audios = converter.get_all_audios()
-        jsonify(audios)
+
 
         data = {
             "pageName": "dashboard",
@@ -83,19 +83,21 @@ class ConverterController:
                 return jsonify({
                     "status": "success",
                     "audioId": audioId,
-                    "audioTitle": audioTitle
+                    "audioTitle": audioTitle,
+                    "message":"Audio convertido, listo para guardar."
                 })
             else:
 
                 converter = ConverterModel()
                 response = converter.save(userId,audioId,audioTitle,audioText,audioLanguage)
 
-                return jsonify(response)
 
-#                 return jsonify({
-#                     "status": "success",
-#                     "message": "Guardar en la db"
-#                 })
+
+                return jsonify({
+                    "status": "success",
+                    "message": "Audio guardado con exito.",
+                    "redirect":"yes"
+                })
         except Exception as e:
             print(f"Error en setConverter: {e}")
             return jsonify({"error": "Error interno del servidor."}), 500
@@ -108,7 +110,19 @@ class ConverterController:
             converter = ConverterModel()
             response = converter.delete(audioId)
 
-            return jsonify(response)
+            if response["status"] == "success":
+
+                return jsonify({
+                        "status": "success",
+                        "message": "Audio eliminado correctamente.",
+                        "redirect":"yes"
+                    })
+            else:
+                return jsonify({
+                        "status": "error",
+                        "message": "No eres se trata de nosotros.",
+                        "redirect":"not"
+                    })
 
         except Exception as e:
             print(f"Error en setProfile: {e}")
@@ -123,7 +137,25 @@ class ConverterController:
             converter = ConverterModel()
             response = converter.add(userId,audioId)
 
-            return jsonify(response)
+            if response["status"] == "success":
+                if response["statusFavorite"] == 1:
+                    return jsonify({
+                        "status": "add",
+                        "message": "Agregado a favoritos.",
+                        "redirect":"yes"
+                    })
+                else:
+                    return jsonify({
+                        "status": "del",
+                        "message": "Se elimino de favoritos.",
+                        "redirect":"yes"
+                    })
+            else:
+                return jsonify({
+                        "status": "error",
+                        "message": "No eres se trata de nosotros.",
+                        "redirect":"not"
+                    })
 
         except Exception as e:
             print(f"Error en setProfile: {e}")

@@ -39,7 +39,6 @@ class AuthController:
                 userEmail = data.get('userEmail')
                 userPassword = data.get('userPassword')
 
-                print(f"Datos recibidos: userEmail={userEmail}, userPassword={userPassword}")
 
                 auth = AuthModel()
                 result = auth.login(userEmail, userPassword)
@@ -51,7 +50,7 @@ class AuthController:
                     session['userId'] = user['userId']
                     session['roleId'] = user['roleId']
                     session['roleName'] = user['roleName']
-                    return jsonify({"status": "login", "redirect": "yes"})
+                    return jsonify({"status": "login", "redirect": "yes","message":"Bienvenido...espera una segundos"})
                 else:
                     return jsonify(result)
 
@@ -95,17 +94,3 @@ class AuthController:
         except Exception as e:
             print(f"Error en setSignup: {e}")
             return jsonify({"message": "Error interno del servidor."}), 500
-
-# {profileFullName: "", userName: "dgm", userEmail: "", userPassword: "123"}
-# profileFullName
-# :
-# ""
-# userEmail
-# :
-# ""
-# userName
-# :
-# "dgm"
-# userPassword
-# :
-# "123"

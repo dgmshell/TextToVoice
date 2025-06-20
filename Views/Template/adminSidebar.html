@@ -17,10 +17,6 @@
                 <a href="#" class="d-block"><?php echo $_SESSION['userData']['profileNames'];?></a>
             </div>
         </div>
-        {% if session['roleName'] == 'admin' %}
-        <li><a href="/admin">Admin Panel</a></li>
-        <li><a href="/manage-users">Manage Users</a></li>
-        {% endif %}
 
         <!-- SidebarSearch Form -->
         <div class="form-inline">
@@ -33,19 +29,24 @@
                 </div>
             </div>
         </div>
-
         <!-- Sidebar Menu -->
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                 <!-- Add icons to the links using the .nav-icon class
                      with font-awesome or any other icon font library -->
-
-
               <li class="nav-item">
                     <a href="{{ url_base() }}dashboard" class="nav-link">
                         <i class="fa-solid fa-chalkboard"></i>
                         <p>
                             Dashboard
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ url_base() }}converter" class="nav-link">
+                        <i class="fa-solid fa-chalkboard"></i>
+                        <p>
+                            Convertir
                         </p>
                     </a>
                 </li>
@@ -59,27 +60,21 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="{{ url_base() }}users" class="nav-link">
+                            <a href="{{ url_base() }}audios" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>Completados</p>
-                            </a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a href="{{ url_base() }}roles" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Pendientes</p>
+                                <p>Audios</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ url_base() }}roles" class="nav-link">
+                            <a href="{{ url_base() }}favorites" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Favoritos</p>
                             </a>
                         </li>
                     </ul>
                 </li>
-               <li class="nav-item">
+                {% if session['roleName'] == 'admin' %}
+                <li class="nav-item">
                     <a href="#" class="nav-link">
                         <i class="fa-solid fa-users"></i>
                         <p>
@@ -103,6 +98,8 @@
                         </li>
                     </ul>
                 </li>
+                {% endif %}
+
                 <li class="nav-item">
                     <a href="{{ url_base() }}auth/logout" class="nav-link">
                         <i class="fa-solid fa-chalkboard"></i>
