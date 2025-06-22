@@ -89,6 +89,25 @@ class AuthModel:
             print(f"Error al obtener los datos del usuario: {e}")
             return None
 
+    def get_global_summary(self):
+        if not self.cursor:
+            return None
+        try:
+            # Ejecutar consulta para obtener los totales
+            self.cursor.execute("""
+                SELECT
+                    COUNT(DISTINCT u.userId) AS totalUsers, -- Total de usuarios
+                    (SELECT COUNT(*) FROM audios) AS totalAudios, -- Total de audios
+                    (SELECT COUNT(*) FROM favorites WHERE statusFavorite = 1) AS totalFavorites -- Total de favoritos activos
+                FROM users u
+            """)
+
+            summary_data = self.cursor.fetchone()
+            return summary_data  # Devuelve un diccionario con los totales
+
+        except Exception as e:
+            print(f"Error al obtener el resumen global: {e}")
+            return None
 
     def signup(self, profileNames, profileSurnames, profileEmail, userName, userPassword):
         roleId = 2

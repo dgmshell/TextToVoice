@@ -11,12 +11,12 @@ export async function deleteUserId(response) {
     const data = await processResponse(response, 'UserId');
 
     switch (data.status) {
-        case 'update':
+        case 'success':
 
             showToast('Exito', data.message, { timeout: 10000, type: 'success' });
-            if(data.status==="yes"){
+            if(data.redirect==="yes"){
                 setTimeout(function() {
-                    window.location.href = router +'dashboard';
+                    window.location.href = router +'users';
                 }, 5000);
             }
             break;

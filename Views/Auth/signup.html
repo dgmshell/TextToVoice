@@ -62,36 +62,35 @@
 </div>
 </body>
 <script>
-
-        document.addEventListener('DOMContentLoaded', () => {
+    document.addEventListener('DOMContentLoaded', () => {
         const form = document.querySelector('.form-data');
         const fields = [
-    { id: 'profileNames', name: 'Nombres' },
-    { id: 'profileSurnames', name: 'Apellidos' },
-    { id: 'profileEmail', name: 'Correo' },
-    { id: 'userName', name: 'Nombre de usuario' },
-    { id: 'userPassword', name: 'Contraseña' }
+            'profileNames',
+            'profileSurnames',
+            'profileEmail',
+            'userName',
+            'userPassword'
         ];
+        const submitButton = document.getElementById('send-user');
 
-        form.addEventListener('submit', (event) => {
-        let isValid = true;
-        let errorMessage = '';
+        // Deshabilitar el botón inicialmente
+        submitButton.disabled = true;
 
-        fields.forEach(field => {
-        const input = document.getElementById(field.id);
-        if (!input.value.trim()) {
-        isValid = false;
-        errorMessage += `El campo "${field.name}" no puede estar vacío.\n`;
-    }
-    });
+        // Función para verificar si todos los campos están llenos
+        const checkFields = () => {
+            const allFilled = fields.every(id => {
+                const input = document.getElementById(id);
+                return input.value.trim() !== '';
+            });
+            submitButton.disabled = !allFilled;
+        };
 
-        if (!isValid) {
-        event.preventDefault();
-        alert(errorMessage);
-    }
-    });
+        // Agregar evento input a cada campo
+        fields.forEach(id => {
+            const input = document.getElementById(id);
+            input.addEventListener('input', checkFields);
+        });
     });
 </script>
-
 <!--=== Footer Page ===-->
 {% include "Template/adminFooter.html" %}

@@ -47,6 +47,31 @@
     </div>
 </div>
 </body>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const loginForm = document.querySelector('.form-data');
+        const loginFields = ['userEmail', 'userPassword'];
+        const loginButton = document.getElementById('send-login');
+
+        // Deshabilitar el botón inicialmente
+        loginButton.disabled = true;
+
+        // Función para verificar si todos los campos están llenos
+        const validateLoginFields = () => {
+            const allFilled = loginFields.every(id => {
+                const input = document.getElementById(id);
+                return input.value.trim() !== '';
+            });
+            loginButton.disabled = !allFilled;
+        };
+
+        // Agregar evento input a cada campo
+        loginFields.forEach(id => {
+            const input = document.getElementById(id);
+            input.addEventListener('input', validateLoginFields);
+        });
+    });
+</script>
 
 <!--=== Footer Page ===-->
 {% include "Template/adminFooter.html" %}

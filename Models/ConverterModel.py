@@ -41,7 +41,7 @@ class ConverterModel:
             self.connection.commit()
 
             return {
-                "status": "successSave",
+                "status": "success",
                 "message": "Audio guardado exitosamente"
             }
 

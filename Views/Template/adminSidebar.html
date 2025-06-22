@@ -34,6 +34,7 @@
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                 <!-- Add icons to the links using the .nav-icon class
                      with font-awesome or any other icon font library -->
+                {% if session['roleName'] == 'admin' %}
               <li class="nav-item">
                     <a href="{{ url_base() }}dashboard" class="nav-link">
                         <i class="fa-solid fa-chalkboard"></i>
@@ -42,6 +43,7 @@
                         </p>
                     </a>
                 </li>
+                {% endif %}
                 <li class="nav-item">
                     <a href="{{ url_base() }}converter" class="nav-link">
                         <i class="fa-solid fa-chalkboard"></i>
@@ -90,12 +92,12 @@
                             </a>
                         </li>
 
-                        <li class="nav-item">
-                            <a href="{{ url_base() }}roles" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Roles</p>
-                            </a>
-                        </li>
+<!--                        <li class="nav-item">-->
+<!--                            <a href="{{ url_base() }}roles" class="nav-link">-->
+<!--                                <i class="far fa-circle nav-icon"></i>-->
+<!--                                <p>Roles</p>-->
+<!--                            </a>-->
+<!--                        </li>-->
                     </ul>
                 </li>
                 {% endif %}

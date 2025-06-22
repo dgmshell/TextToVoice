@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, session, request,jsonify, redirect, url_for
 from Models.AuthModel import AuthModel
+from Models.UsersModel import UsersModel
 from Models.ConverterModel import ConverterModel
 class DashboardController:
     def __init__(self):
@@ -19,13 +20,22 @@ class DashboardController:
         if not user_data:
             return redirect(url_for('auth.login'))
 
-        session['roleId'] = user_data['roleId']
-        session['roleName'] = user_data['roleName']
+        if user_data['roleId'] != 1 or user_data['roleName'].lower() != 'admin':
+            print("⚠️ Acceso denegado: rol cambiado o no autorizado.")
+
+            return redirect(url_for('converter.converter'))
+        else:
+            session['roleId'] = user_data['roleId']
+            session['roleName'] = user_data['roleName']
 
 
             converter = ConverterModel()
             audios = converter.get_all_audios()
 
+            dash = AuthModel()
+            countall = dash.get_global_summary()
 
+            users = UsersModel()
+            users_details = users.get_all_users()
 
-        return render_template("Dashboard/dashboard.html",audios = audios,  user_data=user_data)
+            return render_template("Dashboard/dashboard.html",users_details=users_details,audios = audios,  user_data=user_data,countall =countall)

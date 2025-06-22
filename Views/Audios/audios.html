@@ -36,7 +36,7 @@
                                         <th>Usuario</th>
                                         <th>Titulo audio</th>
                                         <th>Idioma</th>
-                                        <th>Link Audio</th>
+                                        <th>Reproducir Audio</th>
                                         {% if roleId != 1 %}
                                         <th>Favoritos</th>
                                         {% endif %}
@@ -50,10 +50,15 @@
                                         <td>{{ audio.userName }}</td>
                                         <td>{{ audio.audioTitle }}</td>
                                         <td>{{ audio.audioLanguage }}</td>
-                                        <td><a href="{{ url_files() }}audios/{{ audio.audioIdFile }}">Play</a></td>
+                                        <td>
+                                            <!-- Reproductor de audio -->
+                                            <audio controls style="width: 200px;">
+                                                <source src="{{ url_files() }}audios/{{ audio.audioIdFile }}" type="audio/mpeg">
+                                                Tu navegador no soporta la reproducción de audio.
+                                            </audio>
+                                        </td>
                                         {% if roleId != 1 %}
                                         <td>
-
                                             <button class="favoriteAudio btn {% if audio.statusFavorite == 1 %}btn-danger{% else %}btn-primary{% endif %}"
                                                     type="button"
                                                     data-toggle="modal"
@@ -63,10 +68,6 @@
                                                     data-audio-title="{{ audio.audioTitle }}">
                                                 <i class="fa-solid fa-bookmark"></i>
                                             </button>
-
-
-
-
                                         </td>
                                         {% endif %}
                                         <td>
@@ -78,6 +79,7 @@
                                     {% endfor %}
                                     </tbody>
                                 </table>
+
                             </form>
                         </div>
                     </div>

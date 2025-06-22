@@ -33,9 +33,6 @@ class ConverterController:
         session['roleName'] = user_data['roleName']
 
 
-        print(f"✅ Acceso permitido para: {user_data['userName']} con rol {user_data['roleName']}")
-
-
         converter = ConverterModel()
         audios = converter.get_all_audios()
 
@@ -98,7 +95,7 @@ class ConverterController:
                 else:
                      return jsonify({
                          "status": "error",
-                         "message": "Error al guardar el audio.",
+                         "message": "Nombre de audio ya exite.",
                          "redirect":"not"
                      })
 

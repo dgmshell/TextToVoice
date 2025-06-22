@@ -99,7 +99,8 @@ class UsersModel:
                     r.roleName,
                     p.profileNames,
                     p.profileSurnames,
-                    p.profileEmail
+                    p.profileEmail,
+                    u.create_at
                 FROM users u
                 INNER JOIN profiles p ON u.userId = p.userId
                 INNER JOIN roles r ON u.roleId = r.roleId

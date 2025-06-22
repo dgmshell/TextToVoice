@@ -40,10 +40,13 @@
                                     <b>Textos</b> <a class="float-right">{{user_data.audiosCount}}</a>
                                 </li>
                                 <li class="list-group-item">
+                                    <b>Favoritos</b> <a class="float-right">{{user_data.favoritesCount}}</a>
+                                </li>
+                                <li class="list-group-item">
                                     <b>Se unio el</b> <a class="float-right">{{user_data.create_at}}</a>
                                 </li>
                             </ul>
-                            <a href="#" class="btn btn-primary btn-block"><b>Follow</b></a>
+
                         </div>
                     </div>
 
@@ -116,6 +119,34 @@
         </div>
     </section>
 </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.querySelector('.form-data');
+            const fieldsToValidate = ['profileNames', 'profileSurnames', 'profileEmail', 'userName'];
+            const submitButton = form.querySelector('button[type="submit"]');
+
+            // Deshabilitar el botón inicialmente
+            submitButton.disabled = true;
+
+            // Función para verificar si todos los campos requeridos están llenos
+            const validateFields = () => {
+                const allFilled = fieldsToValidate.every(id => {
+                    const input = document.getElementById(id);
+                    return input.value.trim() !== '';
+                });
+                submitButton.disabled = !allFilled;
+            };
+
+            // Agregar evento 'input' a los campos
+            fieldsToValidate.forEach(id => {
+                const input = document.getElementById(id);
+                input.addEventListener('input', validateFields);
+            });
+
+            // Validar campos inicialmente (en caso de valores prellenados)
+            validateFields();
+        });
+    </script>
 
 <!--=== Footer Page ===-->
 {% include "Template/adminFooter.html" %}

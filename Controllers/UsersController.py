@@ -33,8 +33,6 @@ class UsersController:
         session['roleId'] = user_data['roleId']
         session['roleName'] = user_data['roleName']
 
-
-
         return render_template("Users/users.html", users=users_details, user_data=user_data)
 
     def profile(self):
@@ -84,7 +82,9 @@ class UsersController:
             users = UsersModel()
             response = users.delete(userId)
 
-            return jsonify(response)
+            if response["status"] == "success":
+               return jsonify({"status": "success", "redirect": "yes","message":"Usuario y perfil eliminados"})
+
 
         except Exception as e:
             print(f"Error en deleteUserId: {e}")
