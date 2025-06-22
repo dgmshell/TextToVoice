@@ -28,12 +28,12 @@ class UsersController:
         if user_data['roleId'] != 1 or user_data['roleName'].lower() != 'admin':
             print("⚠️ Acceso denegado: rol cambiado o no autorizado.")
             session.clear()
-            return redirect(url_for('auth.login'))
+            return redirect(url_for('users.profile'))
 
         session['roleId'] = user_data['roleId']
         session['roleName'] = user_data['roleName']
 
-        print(f"✅ Acceso permitido para: {user_data['userName']} con rol {user_data['roleName']}")
+
 
         return render_template("Users/users.html", users=users_details, user_data=user_data)
 
@@ -49,24 +49,12 @@ class UsersController:
         if not user_data:
             return redirect(url_for('auth.login'))
 
-        if user_data['roleId'] != 1 or user_data['roleName'].lower() != 'admin':
-            print("⚠️ Acceso denegado: rol cambiado o no autorizado.")
-            session.clear()
-            return redirect(url_for('auth.login'))
 
         session['roleId'] = user_data['roleId']
         session['roleName'] = user_data['roleName']
 
-        print(f"✅ Acceso permitido para: {user_data['userName']} con rol {user_data['roleName']}")
 
-        data = {
-            "pageName": "profile",
-            "pageTitle": "Welcome To Profile",
-            "keywords": "profile, panel",
-            "description": "Profile Admin"
-        }
-
-        return render_template("Users/profile.html", data=data, user_data=user_data)
+        return render_template("Users/profile.html",  user_data=user_data)
 
     def setProfile(self):
         try:
@@ -81,7 +69,8 @@ class UsersController:
             users = UsersModel()
             response = users.update(user_id, profileNames, profileSurnames, profileEmail, userName, userPassword)
 
-            return jsonify(response)
+            if response["status"] == "success":
+               return jsonify({"status": "update", "redirect": "yes","message":"Perfil actualizado...espera una segundos"})
 
         except Exception as e:
             print(f"Error en setProfile: {e}")

@@ -9,7 +9,7 @@ async function processResponse(response, handlerName) {
 
 export async function deleteUserId(response) {
     const data = await processResponse(response, 'UserId');
-    console.log(data.status)
+
     switch (data.status) {
         case 'update':
 

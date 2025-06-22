@@ -14,9 +14,9 @@ export async function setProfile(response) {
         case 'update':
 
             showToast('Exito', data.message, { timeout: 10000, type: 'success' });
-            if(data.status==="yes"){
+            if(data.redirect==="yes"){
                 setTimeout(function() {
-                    window.location.href = router +'dashboard';
+                    window.location.href = router +'users/profile';
                 }, 5000);
             }
             break;

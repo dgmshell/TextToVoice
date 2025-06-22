@@ -54,12 +54,6 @@
                 </div>
                 <button id="send-user" type="submit" class="btn btn-primary btn-block">Crear cuenta</button>
             </form>
-<!--            <div class="social-auth-links text-center mt-2 mb-3">-->
-<!--                <button href="#" class="btn btn-block btn-danger">-->
-<!--                    <i class="fab fa-google-plus mr-2"></i> Crear cuenta con Google+-->
-<!--                </button>-->
-<!--            </div>-->
-
             <p class="mb-0">
                 <a href="{{ url_base() }}auth/login" class="text-center">Ya tienes una cuenta?</a>
             </p>
@@ -67,6 +61,37 @@
     </div>
 </div>
 </body>
+<script>
+
+        document.addEventListener('DOMContentLoaded', () => {
+        const form = document.querySelector('.form-data');
+        const fields = [
+    { id: 'profileNames', name: 'Nombres' },
+    { id: 'profileSurnames', name: 'Apellidos' },
+    { id: 'profileEmail', name: 'Correo' },
+    { id: 'userName', name: 'Nombre de usuario' },
+    { id: 'userPassword', name: 'Contraseña' }
+        ];
+
+        form.addEventListener('submit', (event) => {
+        let isValid = true;
+        let errorMessage = '';
+
+        fields.forEach(field => {
+        const input = document.getElementById(field.id);
+        if (!input.value.trim()) {
+        isValid = false;
+        errorMessage += `El campo "${field.name}" no puede estar vacío.\n`;
+    }
+    });
+
+        if (!isValid) {
+        event.preventDefault();
+        alert(errorMessage);
+    }
+    });
+    });
+</script>
 
 <!--=== Footer Page ===-->
 {% include "Template/adminFooter.html" %}

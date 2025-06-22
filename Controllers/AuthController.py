@@ -11,7 +11,7 @@ class AuthController:
         self.auth_blueprint.add_url_rule('/setLogin', methods=['POST'], view_func=self.setLogin)
         self.auth_blueprint.add_url_rule('/setSignup', methods=['POST'], view_func=self.setSignup)
     def login(self):
-        # Lógica para el login
+
         if 'roleId' in session and session.get('roleName') == 'admin':
                     return redirect(url_for('dashboard.dashboard'))
         data = {
@@ -22,7 +22,7 @@ class AuthController:
                 }
         return render_template('/Auth/login.html', data=data)
     def signup(self):
-        # Lógica para el signup
+
         if 'roleId' in session and session.get('roleName') == 'admin':
                     return redirect(url_for('dashboard.dashboard'))
         data = {
@@ -78,19 +78,25 @@ class AuthController:
             return render_template('/Auth/recovery.html', data=data)
 
     def setSignup(self):
-        try:
-            data = request.get_json()
-            profileNames = data.get('profileNames')
-            profileSurnames = data.get('profileSurnames')
-            profileEmail = data.get('profileEmail')
-            userName = data.get('userName')
-            userPassword = data.get('userPassword')
+            try:
+                data = request.get_json()
+                profileNames = data.get('profileNames')
+                profileSurnames = data.get('profileSurnames')
+                profileEmail = data.get('profileEmail')
+                userName = data.get('userName')
+                userPassword = data.get('userPassword')
 
-            auth = AuthModel()
-            response = auth.signup(profileNames, profileSurnames,profileEmail,userName,userPassword)
+                auth = AuthModel()
+                response = auth.signup(profileNames, profileSurnames,profileEmail,userName,userPassword)
 
-            return jsonify(response)
-
-        except Exception as e:
-            print(f"Error en setSignup: {e}")
-            return jsonify({"message": "Error interno del servidor."}), 500
+                if response["status"] == "success":
+                    return jsonify({
+                        "status": "signup",
+                        "redirect": "yes",
+                        "message": "Cuenta creada... espera unos segundos"
+                    })
+                else:
+                    return jsonify(response)
+            except Exception as e:
+                print(f"Error en setSignup: {e}")
+                return jsonify({"message": "Error interno del servidor."}), 500

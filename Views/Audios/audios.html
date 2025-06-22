@@ -1,5 +1,7 @@
 <!-- Admin Header -->
 {% include "Template/adminHeader.html" %}
+
+{% include "Template/adminNav.html" %}
 <!-- Admin Sidebar -->
 {% include "Template/adminSidebar.html" %}
 <!-- Content Wrapper. Contains page content -->
@@ -21,70 +23,66 @@
     <section class="content">
 
         <!-- Default box -->
-        <div class="card">
-            <div class="card-header">
-                <h3 class="card-title">Title</h3>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body table-responsive p-0">
+                            <form class="form-horizontal form-data" data-destination="profile" calling-method="setProfile" data-type="json">
+                                <table class="table table-hover text-nowrap">
+                                    <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Usuario</th>
+                                        <th>Titulo audio</th>
+                                        <th>Idioma</th>
+                                        <th>Link Audio</th>
+                                        {% if roleId != 1 %}
+                                        <th>Favoritos</th>
+                                        {% endif %}
+                                        <th>Eliminar</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for audio in audios %}
+                                    <tr>
+                                        <td>{{ audio.audioId }}</td>
+                                        <td>{{ audio.userName }}</td>
+                                        <td>{{ audio.audioTitle }}</td>
+                                        <td>{{ audio.audioLanguage }}</td>
+                                        <td><a href="{{ url_files() }}audios/{{ audio.audioIdFile }}">Play</a></td>
+                                        {% if roleId != 1 %}
+                                        <td>
 
-                <div class="card-tools">
-                    <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                        <i class="fas fa-minus"></i>
-                    </button>
-                    <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
-                        <i class="fas fa-times"></i>
-                    </button>
-                </div>
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-12">
-                        <div class="card">
-                            <div class="card-body table-responsive p-0">
-                                <form class="form-horizontal form-data" data-destination="profile" calling-method="setProfile" data-type="json">
-                                    <table class="table table-hover text-nowrap">
-                                        <thead>
-                                        <tr>
-                                            <th>ID</th>
-                                            <th>Usuario</th>
-                                            <th>Titulo audio</th>
-                                            <th>Idioma</th>
-                                            <th>Link Audio</th>
-                                            <th>Favoritos</th>
-                                            <th>Eliminar</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        {% for audio in audios %}
-                                        <tr>
-                                            <td>{{ audio.audioId }}</td>
-                                            <td>{{ audio.userName }}</td>
-                                            <td>{{ audio.audioTitle }}</td>
-                                            <td>{{ audio.audioLanguage }}</td>
-                                            <td><a href="{{ url_files() }}audios/{{ audio.audioIdFile }}">Play</a></td>
-                                            <td>
-                                                <button class="favoriteAudio btn btn-primary" user-id="{{ audio.userId }}" audio-id="{{ audio.audioId }}" audio-title="{{ audio.audioTitle }}" type="button" data-toggle="modal" data-target="#staticBackdrop">
-                                                    Add Favorite
-                                                </button>
-                                            </td>
-                                            <td>
-                                                <button class="deleteAudio btn btn-danger" audio-id="{{ audio.audioId }}" audio-title="{{ audio.audioTitle }}" type="button" data-toggle="modal" data-target="#staticBackdrop2">
-                                                    Eliminar
-                                                </button>
-                                            </td>
-                                        </tr>
-                                        {% endfor %}
-                                        </tbody>
-                                    </table>
-                                </form>
-                            </div>
+                                            <button class="favoriteAudio btn {% if audio.statusFavorite == 1 %}btn-danger{% else %}btn-primary{% endif %}"
+                                                    type="button"
+                                                    data-toggle="modal"
+                                                    data-target="#staticBackdrop"
+                                                    data-user-id="{{ audio.userId }}"
+                                                    data-audio-id="{{ audio.audioId }}"
+                                                    data-audio-title="{{ audio.audioTitle }}">
+                                                <i class="fa-solid fa-bookmark"></i>
+                                            </button>
+
+
+
+
+                                        </td>
+                                        {% endif %}
+                                        <td>
+                                            <button class="deleteAudio btn btn-danger" audio-id="{{ audio.audioId }}" audio-title="{{ audio.audioTitle }}" type="button" data-toggle="modal" data-target="#staticBackdrop2">
+                                                Eliminar
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </form>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- /.card-body -->
-            <div class="card-footer">
-                Footer
-            </div>
-            <!-- /.card-footer-->
         </div>
         <!-- /.card -->
 
@@ -105,11 +103,11 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <h3>Desea agregar <span id="audioTitle3"></span> a favoritos?</h3>
+                        <h3>Desea realizar este cambio para  <span id="audioTitle3"></span>?</h3>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                        <button type="submit" class="btn btn-primary">Agregar</button>
+                        <button type="submit" class="btn btn-primary">Si</button>
                     </div>
                 </div>
             </div>
@@ -133,7 +131,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-danger">Eliminar</button>
+                        <button type="submit" class="btn btn-danger">Si</button>
                     </div>
                 </div>
             </div>
@@ -151,13 +149,19 @@
 
         document.querySelectorAll(".favoriteAudio").forEach(button => {
             button.addEventListener("click", (evt) => {
-                const userId = evt.target.getAttribute("user-id");
-                const audioId = evt.target.getAttribute("audio-id");
-                document.getElementById("audioTitle3").innerText = evt.target.getAttribute("audio-title");
+                const target = evt.currentTarget;
+
+                const userId = target.dataset.userId;
+                const audioId = target.dataset.audioId;
+                const audioTitle = target.dataset.audioTitle;
+                    console.log(audioId)
+                console.log(userId)
+                document.getElementById("audioTitle3").innerText = audioTitle;
                 document.getElementById("userId").value = userId;
                 document.getElementById("audioId3").value = audioId;
             });
         });
+
     </script>
 <!-- /.content-wrapper -->
 <!-- Admin Footer -->

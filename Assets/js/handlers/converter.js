@@ -75,6 +75,15 @@ export async function addFavorite(response) {
                 }, 2000);
             }
             break;
+        case 'newsuccess':
+
+            showToast('Exito', data.message, { timeout: 3000, type: 'success' });
+            if(data.redirect==="yes"){
+                setTimeout(function() {
+                    window.location.href = router +'audios';
+                }, 2000);
+            }
+            break;
         case 'error':
             showToast('Error', data.message, { timeout: 10000, type: 'error' });
             break;

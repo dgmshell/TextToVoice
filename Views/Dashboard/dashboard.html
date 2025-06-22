@@ -1,4 +1,5 @@
 {% include "Template/adminHeader.html" %}
+{% include "Template/adminNav.html" %}
 {% include "Template/adminSidebar.html" %}
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
@@ -114,10 +115,63 @@
                             </div>
                         </div>
                         <div class="card-footer">
-                            Footer  <pre>session user{{session['userSession']}}</pre>
+                            Footer  <pre>{{user_data}}</pre>
                         </div>
                     </div>
+
                 </section>
+        </section>
+        <section class="content">
+
+            <!-- Default box -->
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body table-responsive p-0">
+                                <form class="form-horizontal form-data" data-destination="profile" calling-method="setProfile" data-type="json">
+                                    <table class="table table-hover text-nowrap">
+                                        <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Usuario</th>
+                                            <th>Titulo audio</th>
+                                            <th>Idioma</th>
+                                            <th>Link Audio</th>
+                                            <th>Favoritos</th>
+                                            <th>Eliminar</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for audio in audios %}
+                                        <tr>
+                                            <td>{{ audio.audioId }}</td>
+                                            <td>{{ audio.userName }}</td>
+                                            <td>{{ audio.audioTitle }}</td>
+                                            <td>{{ audio.audioLanguage }}</td>
+                                            <td><a href="{{ url_files() }}audios/{{ audio.audioIdFile }}">Play</a></td>
+                                            <td>
+                                                <button class="favoriteAudio btn btn-primary" user-id="{{ audio.userId }}" audio-id="{{ audio.audioId }}" audio-title="{{ audio.audioTitle }}" type="button" data-toggle="modal" data-target="#staticBackdrop">
+                                                    Add Favorite
+                                                </button>
+                                            </td>
+                                            <td>
+                                                <button class="deleteAudio btn btn-danger" audio-id="{{ audio.audioId }}" audio-title="{{ audio.audioTitle }}" type="button" data-toggle="modal" data-target="#staticBackdrop2">
+                                                    Eliminar
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.card -->
+
         </section>
     </div>
 {% include "Template/adminFooter.html" %}

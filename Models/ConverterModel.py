@@ -70,13 +70,10 @@ class ConverterModel:
                     a.audioTitle,
                     a.audioText,
                     a.audioLanguage,
-                    a.userId,
+                    u.userId,
                     u.userName,
                     a.createdAt,
-                    CASE
-                        WHEN f.favoriteId IS NOT NULL THEN 1
-                        ELSE 0
-                    END AS isFavorite
+                    f.statusFavorite
                 FROM audios a
                 JOIN users u ON a.userId = u.userId
                 LEFT JOIN favorites f ON a.audioId = f.audioId
@@ -108,12 +105,22 @@ class ConverterModel:
 
         try:
             self.cursor.execute("""
-                SELECT a.audioId, a.audioIdFile, a.audioTitle, a.audioText, a.audioLanguage, a.createdAt, u.userName
+                SELECT
+                    a.audioId,
+                    a.audioIdFile,
+                    a.audioTitle,
+                    a.audioText,
+                    a.audioLanguage,
+                    u.userId,
+                    u.userName,
+                    a.createdAt,
+                    f.statusFavorite
                 FROM audios a
                 JOIN users u ON a.userId = u.userId
+                LEFT JOIN favorites f ON a.audioId = f.audioId AND f.userId = %s
                 WHERE a.userId = %s
                 ORDER BY a.createdAt DESC
-            """, (userId,))
+            """, (userId, userId))
 
             rows = self.cursor.fetchall()
 
@@ -129,6 +136,8 @@ class ConverterModel:
                 "status": "error",
                 "message": f"Error inesperado: {e}"
             }
+
+
     def delete(self, audioId):
         if not self.cursor or not self.connection:
             return {
@@ -176,19 +185,24 @@ class ConverterModel:
             }
 
         try:
-
+            # Verificar si ya existe el audio en los favoritos
             self.cursor.execute("""
-                SELECT statusFavorite FROM favorites WHERE userId = %s AND audioId = %s
+                SELECT statusFavorite
+                FROM favorites
+                WHERE userId = %s AND audioId = %s
             """, (userId, audioId))
 
             row = self.cursor.fetchone()
 
             if row is not None:
+                # Si el registro existe, alternar el estado de favorito
                 current_status = row['statusFavorite'] if isinstance(row, dict) else row[0]
                 new_status = 0 if current_status == 1 else 1
 
                 self.cursor.execute("""
-                    UPDATE favorites SET statusFavorite = %s WHERE userId = %s AND audioId = %s
+                    UPDATE favorites
+                    SET statusFavorite = %s
+                    WHERE userId = %s AND audioId = %s
                 """, (new_status, userId, audioId))
 
                 self.connection.commit()
@@ -200,8 +214,7 @@ class ConverterModel:
                 }
 
             else:
-                # Insertar nuevo favorito con statusFavorite = 1
-                print("[DEBUG] Insertando nuevo favorito con statusFavorite = 1")
+                # Si no existe, insertar el nuevo favorito con statusFavorite = 1
                 self.cursor.execute("""
                     INSERT INTO favorites (userId, audioId, statusFavorite)
                     VALUES (%s, %s, 1)
@@ -228,3 +241,84 @@ class ConverterModel:
                 "message": f"Error inesperado: {e}"
             }
 
+    def get_all_audios_favorites(self):
+        if not self.cursor or not self.connection:
+            return {
+                "status": "error",
+                "message": "No se pudo establecer conexión con la base de datos"
+            }
+
+        try:
+            self.cursor.execute("""
+                SELECT
+                    a.audioId,
+                    a.audioIdFile,
+                    a.audioTitle,
+                    a.audioText,
+                    a.audioLanguage,
+                    u.userId,
+                    u.userName,
+                    a.createdAt,
+                    f.statusFavorite
+                FROM audios a
+                JOIN users u ON a.userId = u.userId
+                LEFT JOIN favorites f ON a.audioId = f.audioId AND f.statusFavorite = 1
+                WHERE f.statusFavorite = 1
+                ORDER BY a.createdAt DESC
+            """)
+
+            rows = self.cursor.fetchall()
+
+            return rows
+
+        except mysql.connector.Error as e:
+            return {
+                "status": "error",
+                "message": f"Error en la consulta MySQL: {e}"
+            }
+        except Exception as e:
+            return {
+                "status": "error",
+                "message": f"Error inesperado: {e}"
+            }
+
+    def get_all_by_user_favorites(self, userId):
+        if not self.cursor or not self.connection:
+            return {
+                "status": "error",
+                "message": "No se pudo establecer conexión con la base de datos"
+            }
+
+        try:
+            self.cursor.execute("""
+                SELECT
+                    a.audioId,
+                    a.audioIdFile,
+                    a.audioTitle,
+                    a.audioText,
+                    a.audioLanguage,
+                    u.userId,
+                    u.userName,
+                    a.createdAt,
+                    f.statusFavorite
+                FROM audios a
+                JOIN users u ON a.userId = u.userId
+                LEFT JOIN favorites f ON a.audioId = f.audioId AND f.userId = %s AND f.statusFavorite = 1
+                WHERE a.userId = %s AND f.statusFavorite = 1
+                ORDER BY a.createdAt DESC
+            """, (userId, userId))
+
+            rows = self.cursor.fetchall()
+
+            return rows
+
+        except mysql.connector.Error as e:
+            return {
+                "status": "error",
+                "message": f"Error en la consulta MySQL: {e}"
+            }
+        except Exception as e:
+            return {
+                "status": "error",
+                "message": f"Error inesperado: {e}"
+            }

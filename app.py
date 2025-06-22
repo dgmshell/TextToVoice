@@ -21,7 +21,9 @@ from Controllers.ConverterController import ConverterController
 #=========== Registro de Blueprints
 app.register_blueprint(HomeController().home_blueprint)
 app.register_blueprint(DashboardController().dashboard_blueprint)
-app.register_blueprint(AudiosController().audios_blueprint)
+
+app.register_blueprint(AudiosController().audios_blueprint, url_prefix="/audios")
+
 app.register_blueprint(AuthController().auth_blueprint, url_prefix="/auth")
 app.register_blueprint(UsersController().users_blueprint, url_prefix="/users")
 app.register_blueprint(RolesController().roles_blueprint, url_prefix="/roles")

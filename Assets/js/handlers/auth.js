@@ -17,7 +17,7 @@ export async function setLogin(response) {
             if(data.redirect==="yes"){
                 setTimeout(function() {
                     window.location.href = router +'dashboard';
-                }, 3000);
+                }, 2000);
             }
             break;
 
@@ -32,15 +32,13 @@ export async function setLogin(response) {
 }
 export async function setSignup(response) {
     const data = await processResponse(response, 'Signup');
-    console.log(data.status)
     switch (data.status) {
-        case 'login':
-
+        case 'signup':
             showToast('Exito', data.message, { timeout: 10000, type: 'success' });
-            if(data.status==="yes"){
+            if(data.redirect==="yes"){
                 setTimeout(function() {
-                    window.location.href = router +'dashboard';
-                }, 5000);
+                    window.location.href = router +'auth/login';
+                }, 2000);
             }
             break;
 

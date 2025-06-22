@@ -28,10 +28,6 @@ class ConverterController:
         if not user_data:
             return redirect(url_for('auth.login'))
 
-        if user_data['roleId'] != 1 or user_data['roleName'].lower() != 'admin':
-            print("⚠️ Acceso denegado: rol cambiado o no autorizado.")
-            session.clear()
-            return redirect(url_for('auth.login'))
 
         session['roleId'] = user_data['roleId']
         session['roleName'] = user_data['roleName']
@@ -93,11 +89,19 @@ class ConverterController:
 
 
 
-                return jsonify({
-                    "status": "success",
-                    "message": "Audio guardado con exito.",
-                    "redirect":"yes"
-                })
+                if response["status"]=="success":
+                    return jsonify({
+                        "status": "success",
+                        "message": "Audio guardado con exito.",
+                        "redirect":"yes"
+                    })
+                else:
+                     return jsonify({
+                         "status": "error",
+                         "message": "Error al guardar el audio.",
+                         "redirect":"not"
+                     })
+
         except Exception as e:
             print(f"Error en setConverter: {e}")
             return jsonify({"error": "Error interno del servidor."}), 500
@@ -137,6 +141,8 @@ class ConverterController:
             converter = ConverterModel()
             response = converter.add(userId,audioId)
 
+            print(response["statusFavorite"])
+
             if response["status"] == "success":
                 if response["statusFavorite"] == 1:
                     return jsonify({
@@ -152,9 +158,9 @@ class ConverterController:
                     })
             else:
                 return jsonify({
-                        "status": "error",
-                        "message": "No eres se trata de nosotros.",
-                        "redirect":"not"
+                        "status": "newsuccess",
+                        "message": "Agregado a favoritos.",
+                        "redirect":"yes"
                     })
 
         except Exception as e:

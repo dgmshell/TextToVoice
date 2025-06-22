@@ -70,7 +70,12 @@ class AuthModel:
                     r.roleName,
                     p.profileNames,
                     p.profileSurnames,
-                    p.profileEmail
+                    p.profileEmail,
+                    u.create_at,  -- Fecha de registro del usuario
+                    -- Conteo de audios asociados al usuario
+                    (SELECT COUNT(*) FROM audios a WHERE a.userId = u.userId) AS audiosCount,
+                    -- Conteo de favoritos activos del usuario
+                    (SELECT COUNT(*) FROM favorites f WHERE f.userId = u.userId AND f.statusFavorite = 1) AS favoritesCount
                 FROM users u
                 INNER JOIN roles r ON u.roleId = r.roleId
                 INNER JOIN profiles p ON u.userId = p.userId
@@ -84,9 +89,9 @@ class AuthModel:
             print(f"Error al obtener los datos del usuario: {e}")
             return None
 
-    def signup(self, profileNames, profileSurnames, profileEmail, userName, userPassword):
-        roleId = 1  # Rol por defecto
 
+    def signup(self, profileNames, profileSurnames, profileEmail, userName, userPassword):
+        roleId = 2
         if not self.cursor or not self.connection:
             return {
                 "status": "error",
@@ -94,7 +99,7 @@ class AuthModel:
             }
 
         try:
-            # Verificar si el nombre de usuario ya existe
+
             self.cursor.execute("SELECT * FROM users WHERE userName = %s", (userName,))
             if self.cursor.fetchone():
                 return {
@@ -102,7 +107,7 @@ class AuthModel:
                     "message": "El nombre de usuario ya está registrado"
                 }
 
-            # Verificar si el correo ya existe
+
             self.cursor.execute("SELECT * FROM profiles WHERE profileEmail = %s", (profileEmail,))
             if self.cursor.fetchone():
                 return {
@@ -110,7 +115,7 @@ class AuthModel:
                     "message": "El correo ya está registrado"
                 }
 
-            # Encriptar la contraseña
+
             hashed_password = bcrypt.hashpw(userPassword.encode('utf-8'), bcrypt.gensalt())
 
             # Insertar en users
@@ -120,10 +125,10 @@ class AuthModel:
             """, (userName, hashed_password.decode('utf-8'), roleId))
             self.connection.commit()
 
-            # Obtener el userId insertado
+
             user_id = self.cursor.lastrowid
 
-            # Insertar en profiles
+
             self.cursor.execute("""
                 INSERT INTO profiles (userId, profileNames, profileSurnames, profileEmail)
                 VALUES (%s, %s, %s, %s)

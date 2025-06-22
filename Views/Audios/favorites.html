@@ -1,0 +1,168 @@
+<!-- Admin Header -->
+{% include "Template/adminHeader.html" %}
+
+{% include "Template/adminNav.html" %}
+<!-- Admin Sidebar -->
+{% include "Template/adminSidebar.html" %}
+<!-- Content Wrapper. Contains page content -->
+<body class="hold-transition sidebar-mini">
+<div class="wrapper">
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Audios</h1>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+
+        <!-- Default box -->
+        <div class="card-body">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body table-responsive p-0">
+                            <form class="form-horizontal form-data" data-destination="profile" calling-method="setProfile" data-type="json">
+                                <table class="table table-hover text-nowrap">
+                                    <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Usuario</th>
+                                        <th>Titulo audio</th>
+                                        <th>Idioma</th>
+                                        <th>Link Audio</th>
+                                        {% if roleId != 1 %}
+                                        <th>Favoritos</th>
+                                        {% endif %}
+                                        <th>Eliminar</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for audio in favorites %}
+                                    <tr>
+                                        <td>{{ audio.audioId }}</td>
+                                        <td>{{ audio.userName }}</td>
+                                        <td>{{ audio.audioTitle }}</td>
+                                        <td>{{ audio.audioLanguage }}</td>
+                                        <td><a href="{{ url_files() }}audios/{{ audio.audioIdFile }}">Play</a></td>
+                                        {% if roleId != 1 %}
+                                        <td>
+
+                                            <button class="favoriteAudio btn {% if audio.statusFavorite == 1 %}btn-danger{% else %}btn-primary{% endif %}"
+                                                    type="button"
+                                                    data-toggle="modal"
+                                                    data-target="#staticBackdrop"
+                                                    data-user-id="{{ audio.userId }}"
+                                                    data-audio-id="{{ audio.audioId }}"
+                                                    data-audio-title="{{ audio.audioTitle }}">
+                                                <i class="fa-solid fa-bookmark"></i>
+                                            </button>
+
+
+
+
+                                        </td>
+                                        {% endif %}
+                                        <td>
+                                            <button class="deleteAudio btn btn-danger" audio-id="{{ audio.audioId }}" audio-title="{{ audio.audioTitle }}" type="button" data-toggle="modal" data-target="#staticBackdrop2">
+                                                Eliminar
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.card -->
+
+    </section>
+    <!-- /.content -->
+</div>
+    <!-- Modal Favoritos -->
+    <div class="modal fade" id="staticBackdrop" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <form class="form-data" data-destination="converter" calling-method="addFavorite" data-type="json">
+            <input type="text" name="userId" id="userId" hidden>
+            <input type="text" name="audioId3" id="audioId3" hidden>
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="staticBackdropLabel">Agregar a Favoritos</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <h3>Desea realizar este cambio para  <span id="audioTitle3"></span>?</h3>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                        <button type="submit" class="btn btn-primary">Si</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- Modal Eliminar -->
+    <div class="modal fade" id="staticBackdrop2" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel2" aria-hidden="true">
+        <form class="form-data" data-destination="converter" calling-method="deleteAudioId" data-type="json">
+            <input type="text" name="audioId2" id="audioId2" hidden>
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="staticBackdropLabel2">Eliminar Audio</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <h3>Está seguro de eliminar <span id="audioTitle2"></span>?</h3>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-danger">Si</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        document.querySelectorAll(".deleteAudio").forEach(button => {
+            button.addEventListener("click", (evt) => {
+                const audioId = evt.target.getAttribute("audio-id");
+                document.getElementById("audioTitle2").innerText = evt.target.getAttribute("audio-title");
+                document.getElementById("audioId2").value = audioId;
+            });
+        });
+
+        document.querySelectorAll(".favoriteAudio").forEach(button => {
+            button.addEventListener("click", (evt) => {
+                const target = evt.currentTarget;
+
+                const userId = target.dataset.userId;
+                const audioId = target.dataset.audioId;
+                const audioTitle = target.dataset.audioTitle;
+                    console.log(audioId)
+                console.log(userId)
+                document.getElementById("audioTitle3").innerText = audioTitle;
+                document.getElementById("userId").value = userId;
+                document.getElementById("audioId3").value = audioId;
+            });
+        });
+
+    </script>
+<!-- /.content-wrapper -->
+<!-- Admin Footer -->
+{% include "Template/adminFooter.html" %}

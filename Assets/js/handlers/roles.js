@@ -14,10 +14,10 @@ export async function setRoleId(response) {
         case 'update':
 
             showToast('Exito', data.message, { timeout: 10000, type: 'success' });
-            if(data.status==="yes"){
+            if(data.redirect==="yes"){
                 setTimeout(function() {
-                    window.location.href = router +'dashboard';
-                }, 5000);
+                    window.location.href = router +'users';
+                }, 2000);
             }
             break;
 

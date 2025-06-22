@@ -1,1 +1,253 @@
-<h1>Home</h1>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Texto a Audio | Convierte tu voz</title>
+    <style>
+        :root {
+            --main-color: #5c6ac4;
+            --accent-color: #48c6ef;
+            --bg-color: #f4f8fb;
+            --text-color: #2a2a2a;
+            --white: #ffffff;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+a{
+    text-decoration: none;
+}
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: var(--white);
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--shadow);
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--main-color);
+        }
+
+        .nav-buttons button {
+            background: linear-gradient(45deg, var(--main-color), var(--accent-color));
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin-left: 12px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: transform 0.2s ease;
+        }
+        .nav-buttons button a{
+            color: white;
+        }
+        .nav-buttons button:hover {
+            transform: scale(1.05);
+        }
+
+        .hero {
+            text-align: center;
+            padding: 80px 20px 40px;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: var(--main-color);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto;
+            color: #444;
+        }
+
+        .features, .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            padding: 50px 40px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .feature, .stat {
+            background: white;
+            border-radius: 15px;
+            padding: 30px 20px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .feature:hover, .stat:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+        }
+
+        .feature h3, .stat h3 {
+            color: var(--main-color);
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+
+        .feature p, .stat p {
+            font-size: 1rem;
+            color: #666;
+        }
+
+        .stat .number {
+            font-size: 2.2rem;
+            font-weight: bold;
+            color: var(--accent-color);
+            margin-bottom: 10px;
+        }
+
+        .cta-banner {
+            background: linear-gradient(45deg, var(--main-color), var(--accent-color));
+            color: white;
+            text-align: center;
+            padding: 60px 20px;
+            margin: 60px 0 0;
+        }
+
+        .cta-banner h2 {
+            font-size: 2.2rem;
+            margin-bottom: 15px;
+        }
+
+        .cta-banner p {
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+        }
+
+        .cta-banner button {
+            background: white;
+            color: var(--main-color);
+            border: none;
+            padding: 12px 30px;
+            border-radius: 30px;
+            font-size: 1rem;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.3s ease, transform 0.2s ease;
+        }
+
+        .cta-banner button:hover {
+            background: #f0f0f0;
+            transform: scale(1.05);
+        }
+
+        footer {
+            background: #1f1f2e;
+            color: #bbb;
+            text-align: center;
+            padding: 30px 20px;
+            font-size: 0.95rem;
+            margin-top: auto;
+        }
+
+        footer a {
+            color: #aaa;
+            margin: 0 10px;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        footer a:hover {
+            color: var(--accent-color);
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+            .cta-banner h2 {
+                font-size: 1.6rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<header>
+    <div class="logo">🎧 AudioTexto</div>
+    <div class="nav-buttons">
+        <button><a href="{{ url_base() }}auth/login">Iniciar Sesión</a></button>
+        <button><a href="{{ url_base() }}auth/signup">Crear cuenta</a></button>
+    </div>
+</header>
+
+<section class="hero">
+    <h1>Convierte tu texto en audio natural</h1>
+    <p>Transforma textos en voz clara en español e inglés. Guarda audios favoritos, accede desde cualquier dispositivo. Todo en una plataforma amigable y rápida.</p>
+</section>
+
+<section class="features">
+    <div class="feature">
+        <h3>🎙 Texto a voz en Español</h3>
+        <p>Convierte texto español a una voz clara, perfecta para leer artículos o estudiar.</p>
+    </div>
+    <div class="feature">
+        <h3>🗣 Inglés fluido</h3>
+        <p>Transcribe textos en inglés con excelente pronunciación y velocidad natural.</p>
+    </div>
+    <div class="feature">
+        <h3>⭐ Guardar Favoritos</h3>
+        <p>Organiza tus audios favoritos para reproducirlos cuando quieras fácilmente.</p>
+    </div>
+    <div class="feature">
+        <h3>📱 Responsive</h3>
+        <p>Funciona perfectamente desde móviles, tablets y escritorio sin perder calidad.</p>
+    </div>
+</section>
+
+<section class="stats">
+    <div class="stat">
+        <div class="number" id="textCount">+8,521</div>
+        <h3>Textos Convertidos</h3>
+        <p>Millones de palabras han sido transformadas en audio.</p>
+    </div>
+    <div class="stat">
+        <div class="number" id="audioCount">+3,042</div>
+        <h3>Audios Generados</h3>
+        <p>Cientos de horas de voz lista para reproducir.</p>
+    </div>
+    <div class="stat">
+        <div class="number" id="favCount">+1,215</div>
+        <h3>Favoritos Guardados</h3>
+        <p>Audios favoritos para volver a escuchar cuando quieras.</p>
+    </div>
+</section>
+
+<section class="cta-banner">
+    <h2>¿Listo para escuchar tus textos?</h2>
+    <p>Convierte tus palabras en voz con un clic. Fácil, rápido y gratis.</p>
+    <button onclick="alert('Redirigiendo al conversor...')">Convertir Ahora</button>
+</section>
+
+<footer>
+    <p>© 2025 AudioTexto. Todos los derechos reservados.</p>
+
+</footer>
+</body>
+</html>

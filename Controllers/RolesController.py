@@ -29,16 +29,8 @@ class RolesController:
         session['roleId'] = user_data['roleId']
         session['roleName'] = user_data['roleName']
 
-        print(f"✅ Acceso permitido para: {user_data['userName']} con rol {user_data['roleName']}")
 
-        data = {
-            "pageName": "roles",
-            "pageTitle": "Welcome To roles",
-            "keywords": "roles, panel",
-            "description": "Dashboard Admin"
-        }
-
-        return render_template("Roles/roles.html", data=data, user_data=user_data)
+        return render_template("Roles/roles.html", user_data=user_data)
 
     def setRoleId(self):
         try:
@@ -50,7 +42,14 @@ class RolesController:
             roles = RolesModel()
             response = roles.update(userId, roleId)
 
-            return jsonify(response)
+            if response["status"] == "success":
+                return jsonify({
+                    "status": "update",
+                    "redirect": "yes",
+                    "message": "Rol actualizado... espera unos segundos"
+                })
+            else:
+                return jsonify(response)
 
         except Exception as e:
             print(f"Error en setRoleId: {e}")
